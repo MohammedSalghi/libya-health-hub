@@ -19,6 +19,30 @@ import DoctorProfile from "./pages/patient/DoctorProfile";
 import Appointments from "./pages/patient/Appointments";
 import Messages from "./pages/patient/Messages";
 import Chat from "./pages/patient/Chat";
+import Wallet from "./pages/patient/Wallet";
+import Profile from "./pages/patient/Profile";
+import HealthRecords from "./pages/patient/HealthRecords";
+import AIAssistant from "./pages/patient/AIAssistant";
+import Pharmacy from "./pages/patient/Pharmacy";
+import Notifications from "./pages/patient/Notifications";
+import Settings from "./pages/patient/Settings";
+
+// Doctor Pages
+import DoctorDashboard from "./pages/doctor/Dashboard";
+import DoctorSchedule from "./pages/doctor/Schedule";
+import DoctorPatients from "./pages/doctor/Patients";
+import DoctorPrescriptions from "./pages/doctor/Prescriptions";
+
+// Dashboard Pages
+import ClinicDashboard from "./pages/dashboard/ClinicDashboard";
+import LabDashboard from "./pages/dashboard/LabDashboard";
+import PharmacyDashboard from "./pages/dashboard/PharmacyDashboard";
+
+// Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminUsers from "./pages/admin/Users";
+import AdminFacilities from "./pages/admin/Facilities";
+import AdminAnalytics from "./pages/admin/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -44,8 +68,31 @@ const App = () => (
           <Route path="/patient/appointments" element={<Appointments />} />
           <Route path="/patient/messages" element={<Messages />} />
           <Route path="/patient/chat/:id" element={<Chat />} />
+          <Route path="/patient/wallet" element={<Wallet />} />
+          <Route path="/patient/profile" element={<Profile />} />
+          <Route path="/patient/health-records" element={<HealthRecords />} />
+          <Route path="/patient/ai-assistant" element={<AIAssistant />} />
+          <Route path="/patient/pharmacy" element={<Pharmacy />} />
+          <Route path="/patient/notifications" element={<Notifications />} />
+          <Route path="/patient/settings" element={<Settings />} />
+
+          {/* Doctor Routes */}
+          <Route path="/doctor" element={<DoctorDashboard />} />
+          <Route path="/doctor/schedule" element={<DoctorSchedule />} />
+          <Route path="/doctor/patients" element={<DoctorPatients />} />
+          <Route path="/doctor/prescriptions" element={<DoctorPrescriptions />} />
+
+          {/* Dashboard Routes */}
+          <Route path="/clinic" element={<ClinicDashboard />} />
+          <Route path="/lab" element={<LabDashboard />} />
+          <Route path="/pharmacy-dashboard" element={<PharmacyDashboard />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/facilities" element={<AdminFacilities />} />
+          <Route path="/admin/analytics" element={<AdminAnalytics />} />
           
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
