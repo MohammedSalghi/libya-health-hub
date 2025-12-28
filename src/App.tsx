@@ -16,6 +16,7 @@ import Permissions from "./pages/auth/Permissions";
 import PatientDashboard from "./pages/patient/Dashboard";
 import PatientSearch from "./pages/patient/Search";
 import DoctorProfile from "./pages/patient/DoctorProfile";
+import ClinicProfile from "./pages/patient/ClinicProfile";
 import Appointments from "./pages/patient/Appointments";
 import Messages from "./pages/patient/Messages";
 import Chat from "./pages/patient/Chat";
@@ -26,6 +27,9 @@ import AIAssistant from "./pages/patient/AIAssistant";
 import Pharmacy from "./pages/patient/Pharmacy";
 import Notifications from "./pages/patient/Notifications";
 import Settings from "./pages/patient/Settings";
+import Ambulance from "./pages/patient/Ambulance";
+import VideoConsultation from "./pages/patient/VideoConsultation";
+import LabBooking from "./pages/patient/LabBooking";
 
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/Dashboard";
@@ -65,6 +69,7 @@ const App = () => (
           <Route path="/patient" element={<PatientDashboard />} />
           <Route path="/patient/search" element={<PatientSearch />} />
           <Route path="/patient/doctor/:id" element={<DoctorProfile />} />
+          <Route path="/patient/clinic/:id" element={<ClinicProfile />} />
           <Route path="/patient/appointments" element={<Appointments />} />
           <Route path="/patient/messages" element={<Messages />} />
           <Route path="/patient/chat/:id" element={<Chat />} />
@@ -75,6 +80,10 @@ const App = () => (
           <Route path="/patient/pharmacy" element={<Pharmacy />} />
           <Route path="/patient/notifications" element={<Notifications />} />
           <Route path="/patient/settings" element={<Settings />} />
+          <Route path="/patient/services/ambulance" element={<Ambulance />} />
+          <Route path="/patient/video-consultation" element={<VideoConsultation />} />
+          <Route path="/patient/video-booking/:id" element={<DoctorProfile />} />
+          <Route path="/patient/lab/:id" element={<LabBooking />} />
 
           {/* Doctor Routes */}
           <Route path="/doctor" element={<DoctorDashboard />} />
