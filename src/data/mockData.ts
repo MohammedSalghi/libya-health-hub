@@ -1,0 +1,581 @@
+// Mock Data for Healthcare Super App
+import { 
+  Clinic, Doctor, Lab, Pharmacy, AmbulanceService,
+  Insurance, WorkingHours, LabTest, Medication, AmbulanceType
+} from '@/types/healthcare';
+
+// ============= Insurance Companies =============
+export const insuranceCompanies: Insurance[] = [
+  { id: 'ins1', name: 'التأمين الوطني', coveragePercentage: 80 },
+  { id: 'ins2', name: 'ليبيا للتأمين', coveragePercentage: 70 },
+  { id: 'ins3', name: 'الصحراء للتأمين', coveragePercentage: 75 },
+  { id: 'ins4', name: 'المتوسط للتأمين', coveragePercentage: 65 },
+];
+
+// ============= Standard Working Hours =============
+const standardWorkingHours: WorkingHours[] = [
+  { day: 'السبت', open: '09:00', close: '17:00', isOpen: true },
+  { day: 'الأحد', open: '09:00', close: '17:00', isOpen: true },
+  { day: 'الإثنين', open: '09:00', close: '17:00', isOpen: true },
+  { day: 'الثلاثاء', open: '09:00', close: '17:00', isOpen: true },
+  { day: 'الأربعاء', open: '09:00', close: '17:00', isOpen: true },
+  { day: 'الخميس', open: '09:00', close: '14:00', isOpen: true },
+  { day: 'الجمعة', open: '00:00', close: '00:00', isOpen: false },
+];
+
+// ============= Clinics =============
+export const clinics: Clinic[] = [
+  {
+    id: 'clinic1',
+    name: 'مستشفى طرابلس المركزي',
+    type: 'hospital',
+    description: 'مستشفى متكامل يقدم خدمات طبية شاملة بأحدث التجهيزات الطبية',
+    location: {
+      lat: 32.8872,
+      lng: 13.1913,
+      address: 'شارع الجمهورية، وسط المدينة',
+      city: 'طرابلس',
+      district: 'المنشية'
+    },
+    phone: '+218 21 123 4567',
+    email: 'info@tripoli-central.ly',
+    workingHours: standardWorkingHours,
+    services: ['طوارئ 24 ساعة', 'عمليات جراحية', 'أشعة', 'مختبر', 'صيدلية'],
+    specialties: ['طب القلب', 'طب الأطفال', 'جراحة عامة', 'طب العيون', 'طب النساء'],
+    insurances: insuranceCompanies,
+    images: ['/hospital1.jpg', '/hospital2.jpg'],
+    rating: 4.5,
+    reviewCount: 234,
+    doctorCount: 45,
+    isVerified: true,
+    isOpen: true,
+    fees: [
+      { type: 'platform', amount: 5, currency: 'د.ل', description: 'رسوم الخدمة' }
+    ]
+  },
+  {
+    id: 'clinic2',
+    name: 'عيادة الشفاء التخصصية',
+    type: 'clinic',
+    description: 'عيادة تخصصية متميزة في طب الباطنية والقلب',
+    location: {
+      lat: 32.8952,
+      lng: 13.1823,
+      address: 'شارع النصر، حي الأندلس',
+      city: 'طرابلس',
+      district: 'الأندلس'
+    },
+    phone: '+218 21 987 6543',
+    email: 'info@alshifa-clinic.ly',
+    workingHours: standardWorkingHours,
+    services: ['استشارات طبية', 'تخطيط القلب', 'فحص إيكو', 'تحاليل'],
+    specialties: ['طب القلب', 'طب الباطنية'],
+    insurances: [insuranceCompanies[0], insuranceCompanies[1]],
+    images: ['/clinic1.jpg'],
+    rating: 4.8,
+    reviewCount: 156,
+    doctorCount: 8,
+    isVerified: true,
+    isOpen: true,
+    fees: [
+      { type: 'platform', amount: 3, currency: 'د.ل', description: 'رسوم الخدمة' }
+    ]
+  },
+  {
+    id: 'clinic3',
+    name: 'مركز النور للعيون',
+    type: 'medical_center',
+    description: 'مركز متخصص في طب وجراحة العيون بأحدث التقنيات',
+    location: {
+      lat: 32.8782,
+      lng: 13.2013,
+      address: 'شارع زاوية الدهماني',
+      city: 'طرابلس',
+      district: 'زاوية الدهماني'
+    },
+    phone: '+218 21 555 1234',
+    workingHours: standardWorkingHours,
+    services: ['فحص نظر', 'جراحة الليزك', 'علاج المياه البيضاء', 'علاج الشبكية'],
+    specialties: ['طب العيون'],
+    insurances: insuranceCompanies,
+    images: ['/eye-center.jpg'],
+    rating: 4.7,
+    reviewCount: 203,
+    doctorCount: 5,
+    isVerified: true,
+    isOpen: true,
+    fees: [
+      { type: 'platform', amount: 5, currency: 'د.ل', description: 'رسوم الخدمة' }
+    ]
+  }
+];
+
+// ============= Doctors =============
+export const doctors: Doctor[] = [
+  {
+    id: 'doc1',
+    name: 'د. أحمد محمد العزابي',
+    title: 'استشاري أمراض القلب',
+    specialty: 'طب القلب',
+    subspecialties: ['قسطرة القلب', 'أمراض الشرايين'],
+    clinicId: 'clinic1',
+    clinicName: 'مستشفى طرابلس المركزي',
+    qualifications: [
+      'بكالوريوس الطب والجراحة - جامعة طرابلس',
+      'ماجستير أمراض القلب - جامعة القاهرة',
+    ],
+    certifications: ['زمالة بريطانية MRCP', 'البورد العربي لأمراض القلب'],
+    yearsExperience: 15,
+    languages: ['العربية', 'الإنجليزية'],
+    insurances: insuranceCompanies,
+    bio: 'طبيب قلب متخصص مع خبرة تزيد عن 15 عاماً في تشخيص وعلاج أمراض القلب والأوعية الدموية. حاصل على الزمالة البريطانية في أمراض القلب.',
+    rating: 4.9,
+    reviewCount: 156,
+    patientCount: 2500,
+    fees: {
+      consultation: 50,
+      video: 40,
+      urgent: 100,
+      homeVisit: 150
+    },
+    availability: [],
+    services: ['تخطيط القلب', 'فحص إيكو', 'اختبار الجهد', 'قسطرة القلب'],
+    acceptsVideo: true,
+    acceptsHomeVisit: true,
+    gender: 'male',
+    isVerified: true,
+    isAvailable: true
+  },
+  {
+    id: 'doc2',
+    name: 'د. فاطمة علي الشريف',
+    title: 'أخصائية طب الأطفال',
+    specialty: 'طب الأطفال',
+    subspecialties: ['حديثي الولادة', 'أمراض الجهاز التنفسي للأطفال'],
+    clinicId: 'clinic2',
+    clinicName: 'عيادة الشفاء التخصصية',
+    qualifications: [
+      'بكالوريوس الطب - جامعة بنغازي',
+      'دبلوم طب الأطفال - جامعة طرابلس',
+    ],
+    certifications: ['عضو الجمعية الليبية لطب الأطفال'],
+    yearsExperience: 8,
+    languages: ['العربية', 'الإنجليزية', 'الفرنسية'],
+    insurances: [insuranceCompanies[0], insuranceCompanies[1]],
+    bio: 'طبيبة أطفال متخصصة في رعاية الأطفال وحديثي الولادة. تؤمن بأهمية التواصل مع الأهل وتقديم رعاية شاملة للطفل.',
+    rating: 4.8,
+    reviewCount: 98,
+    patientCount: 1200,
+    fees: {
+      consultation: 40,
+      video: 30,
+      urgent: 80,
+      homeVisit: 120
+    },
+    availability: [],
+    services: ['فحص عام', 'تطعيمات', 'متابعة النمو', 'علاج أمراض الأطفال'],
+    acceptsVideo: true,
+    acceptsHomeVisit: true,
+    gender: 'female',
+    isVerified: true,
+    isAvailable: true
+  },
+  {
+    id: 'doc3',
+    name: 'د. محمود سالم الفيتوري',
+    title: 'استشاري طب العيون',
+    specialty: 'طب العيون',
+    subspecialties: ['جراحة الليزك', 'جراحة الشبكية'],
+    clinicId: 'clinic3',
+    clinicName: 'مركز النور للعيون',
+    qualifications: [
+      'بكالوريوس الطب - جامعة طرابلس',
+      'ماجستير طب العيون - جامعة عين شمس',
+    ],
+    certifications: ['زمالة أوروبية في جراحة العيون FEBO'],
+    yearsExperience: 12,
+    languages: ['العربية', 'الإنجليزية'],
+    insurances: insuranceCompanies,
+    bio: 'استشاري طب وجراحة العيون متخصص في عمليات تصحيح النظر بالليزك وجراحة الشبكية.',
+    rating: 4.7,
+    reviewCount: 203,
+    patientCount: 1800,
+    fees: {
+      consultation: 60,
+      video: 45,
+      urgent: 120,
+      homeVisit: 200
+    },
+    availability: [],
+    services: ['فحص نظر شامل', 'جراحة الليزك', 'علاج الجلوكوما', 'جراحة المياه البيضاء'],
+    acceptsVideo: true,
+    acceptsHomeVisit: false,
+    gender: 'male',
+    isVerified: true,
+    isAvailable: true
+  },
+  {
+    id: 'doc4',
+    name: 'د. سارة أحمد المصراتي',
+    title: 'أخصائية الأمراض الجلدية',
+    specialty: 'طب الجلدية',
+    clinicId: 'clinic1',
+    clinicName: 'مستشفى طرابلس المركزي',
+    qualifications: [
+      'بكالوريوس الطب - جامعة طرابلس',
+      'ماجستير الأمراض الجلدية',
+    ],
+    certifications: [],
+    yearsExperience: 6,
+    languages: ['العربية', 'الإنجليزية'],
+    insurances: [insuranceCompanies[0]],
+    bio: 'أخصائية جلدية متميزة في علاج مشاكل البشرة والشعر.',
+    rating: 4.6,
+    reviewCount: 87,
+    patientCount: 950,
+    fees: {
+      consultation: 45,
+      video: 35,
+      urgent: 90,
+      homeVisit: 130
+    },
+    availability: [],
+    services: ['علاج حب الشباب', 'علاج الصدفية', 'إزالة الشامات', 'العناية بالبشرة'],
+    acceptsVideo: true,
+    acceptsHomeVisit: true,
+    gender: 'female',
+    isVerified: true,
+    isAvailable: true
+  }
+];
+
+// ============= Labs =============
+export const labs: Lab[] = [
+  {
+    id: 'lab1',
+    name: 'مختبرات الأمل الطبية',
+    location: {
+      lat: 32.8862,
+      lng: 13.1903,
+      address: 'شارع الفتح، طرابلس',
+      city: 'طرابلس'
+    },
+    phone: '+218 91 111 2222',
+    workingHours: standardWorkingHours,
+    services: [],
+    insurances: insuranceCompanies,
+    images: ['/lab1.jpg'],
+    rating: 4.7,
+    reviewCount: 312,
+    offersHomeCollection: true,
+    homeCollectionFee: 20,
+    isOpen: true
+  },
+  {
+    id: 'lab2',
+    name: 'مختبر الصحة المتكاملة',
+    location: {
+      lat: 32.8932,
+      lng: 13.1853,
+      address: 'شارع النصر، حي الأندلس',
+      city: 'طرابلس'
+    },
+    phone: '+218 91 222 3333',
+    workingHours: standardWorkingHours,
+    services: [],
+    insurances: [insuranceCompanies[0], insuranceCompanies[1]],
+    images: ['/lab2.jpg'],
+    rating: 4.5,
+    reviewCount: 198,
+    offersHomeCollection: true,
+    homeCollectionFee: 25,
+    isOpen: true
+  }
+];
+
+// ============= Lab Tests =============
+export const labTests: LabTest[] = [
+  {
+    id: 'test1',
+    name: 'تحليل دم شامل (CBC)',
+    nameEn: 'Complete Blood Count',
+    category: 'تحاليل الدم',
+    description: 'فحص شامل لمكونات الدم',
+    preparationInstructions: 'لا يتطلب صيام',
+    resultTime: '4 ساعات',
+    price: 25,
+    insuranceCoverage: 80,
+    homeCollectionAvailable: true
+  },
+  {
+    id: 'test2',
+    name: 'سكر صائم',
+    nameEn: 'Fasting Blood Sugar',
+    category: 'تحاليل السكر',
+    description: 'قياس مستوى السكر في الدم',
+    preparationInstructions: 'صيام 8-12 ساعة قبل التحليل',
+    resultTime: '2 ساعات',
+    price: 15,
+    insuranceCoverage: 80,
+    homeCollectionAvailable: true
+  },
+  {
+    id: 'test3',
+    name: 'وظائف الكلى',
+    nameEn: 'Kidney Function Test',
+    category: 'تحاليل الكلى',
+    description: 'فحص وظائف الكلى شامل',
+    preparationInstructions: 'لا يتطلب صيام',
+    resultTime: '6 ساعات',
+    price: 45,
+    insuranceCoverage: 70,
+    homeCollectionAvailable: true
+  },
+  {
+    id: 'test4',
+    name: 'وظائف الكبد',
+    nameEn: 'Liver Function Test',
+    category: 'تحاليل الكبد',
+    description: 'فحص شامل لوظائف الكبد',
+    resultTime: '6 ساعات',
+    price: 50,
+    insuranceCoverage: 70,
+    homeCollectionAvailable: true
+  },
+  {
+    id: 'test5',
+    name: 'تحليل الغدة الدرقية TSH',
+    nameEn: 'Thyroid Stimulating Hormone',
+    category: 'تحاليل الهرمونات',
+    description: 'فحص هرمون الغدة الدرقية',
+    resultTime: '24 ساعة',
+    price: 60,
+    insuranceCoverage: 60,
+    homeCollectionAvailable: true
+  }
+];
+
+// ============= Pharmacies =============
+export const pharmacies: Pharmacy[] = [
+  {
+    id: 'pharm1',
+    name: 'صيدلية الشفاء',
+    location: {
+      lat: 32.8872,
+      lng: 13.1923,
+      address: 'شارع الجمهورية',
+      city: 'طرابلس'
+    },
+    phone: '+218 91 444 5555',
+    workingHours: [
+      ...standardWorkingHours.slice(0, 5),
+      { day: 'الخميس', open: '09:00', close: '22:00', isOpen: true },
+      { day: 'الجمعة', open: '10:00', close: '14:00', isOpen: true },
+    ],
+    rating: 4.8,
+    reviewCount: 456,
+    isOpen: true,
+    offersDelivery: true,
+    deliveryFee: 10,
+    deliveryTime: '30-45 دقيقة',
+    insurances: insuranceCompanies
+  },
+  {
+    id: 'pharm2',
+    name: 'صيدلية الأمل',
+    location: {
+      lat: 32.8912,
+      lng: 13.1843,
+      address: 'شارع النصر، حي الأندلس',
+      city: 'طرابلس'
+    },
+    phone: '+218 91 555 6666',
+    workingHours: standardWorkingHours,
+    rating: 4.5,
+    reviewCount: 234,
+    isOpen: true,
+    offersDelivery: true,
+    deliveryFee: 15,
+    deliveryTime: '45-60 دقيقة',
+    insurances: [insuranceCompanies[0], insuranceCompanies[1]]
+  },
+  {
+    id: 'pharm3',
+    name: 'صيدلية النور',
+    location: {
+      lat: 32.8792,
+      lng: 13.2003,
+      address: 'شارع زاوية الدهماني',
+      city: 'طرابلس'
+    },
+    phone: '+218 91 666 7777',
+    workingHours: standardWorkingHours,
+    rating: 4.7,
+    reviewCount: 189,
+    isOpen: false,
+    offersDelivery: true,
+    deliveryFee: 12,
+    deliveryTime: '40-50 دقيقة',
+    insurances: insuranceCompanies
+  }
+];
+
+// ============= Medications =============
+export const medications: Medication[] = [
+  {
+    id: 'med1',
+    name: 'باراسيتامول 500mg',
+    nameEn: 'Paracetamol',
+    genericName: 'Acetaminophen',
+    manufacturer: 'شركة الدواء الليبية',
+    dosage: '500mg',
+    form: 'tablet',
+    price: 15,
+    inStock: true,
+    requiresPrescription: false,
+    alternatives: ['med2'],
+    sideEffects: ['غثيان خفيف في حالات نادرة']
+  },
+  {
+    id: 'med2',
+    name: 'إيبوبروفين 400mg',
+    nameEn: 'Ibuprofen',
+    manufacturer: 'فارما ليبيا',
+    dosage: '400mg',
+    form: 'tablet',
+    price: 20,
+    inStock: true,
+    requiresPrescription: false,
+    sideEffects: ['اضطرابات معوية', 'صداع']
+  },
+  {
+    id: 'med3',
+    name: 'أوميبرازول 20mg',
+    nameEn: 'Omeprazole',
+    manufacturer: 'الشركة العربية للأدوية',
+    dosage: '20mg',
+    form: 'capsule',
+    price: 35,
+    inStock: true,
+    requiresPrescription: true
+  },
+  {
+    id: 'med4',
+    name: 'أموكسيسيلين 500mg',
+    nameEn: 'Amoxicillin',
+    manufacturer: 'فارما ليبيا',
+    dosage: '500mg',
+    form: 'capsule',
+    price: 25,
+    inStock: true,
+    requiresPrescription: true,
+    sideEffects: ['إسهال', 'طفح جلدي في حالات الحساسية']
+  }
+];
+
+// ============= Ambulance Services =============
+export const ambulanceServices: AmbulanceService[] = [
+  {
+    id: 'amb1',
+    name: 'خدمة الإسعاف الوطنية',
+    phone: '1515',
+    types: [],
+    rating: 4.6,
+    reviewCount: 567,
+    averageResponseTime: 8,
+    isAvailable: true
+  }
+];
+
+// ============= Ambulance Types =============
+export const ambulanceTypes: AmbulanceType[] = [
+  {
+    id: 'ambtype1',
+    name: 'إسعاف عادي',
+    description: 'سيارة إسعاف مجهزة للحالات العادية والنقل الطبي',
+    baseFee: 50,
+    perKmFee: 3,
+    equipment: ['إسعافات أولية', 'أكسجين', 'نقالة']
+  },
+  {
+    id: 'ambtype2',
+    name: 'إسعاف متقدم',
+    description: 'سيارة إسعاف مجهزة بالكامل للحالات الحرجة',
+    baseFee: 100,
+    perKmFee: 5,
+    equipment: ['إسعافات أولية', 'أكسجين', 'جهاز صدمات', 'أجهزة مراقبة', 'أدوية طوارئ']
+  },
+  {
+    id: 'ambtype3',
+    name: 'إسعاف العناية المركزة',
+    description: 'وحدة عناية مركزة متنقلة للحالات الحرجة جداً',
+    baseFee: 200,
+    perKmFee: 8,
+    equipment: ['جهاز تنفس صناعي', 'أجهزة مراقبة متقدمة', 'طاقم طبي متخصص']
+  }
+];
+
+// ============= Specialties List =============
+export const specialties = [
+  { id: 1, name: 'طب القلب', icon: '❤️', nameEn: 'Cardiology' },
+  { id: 2, name: 'طب الأطفال', icon: '👶', nameEn: 'Pediatrics' },
+  { id: 3, name: 'طب الأسنان', icon: '🦷', nameEn: 'Dentistry' },
+  { id: 4, name: 'طب العيون', icon: '👁️', nameEn: 'Ophthalmology' },
+  { id: 5, name: 'طب الجلدية', icon: '🧴', nameEn: 'Dermatology' },
+  { id: 6, name: 'طب العظام', icon: '🦴', nameEn: 'Orthopedics' },
+  { id: 7, name: 'طب النساء', icon: '👩', nameEn: 'Gynecology' },
+  { id: 8, name: 'طب الأعصاب', icon: '🧠', nameEn: 'Neurology' },
+  { id: 9, name: 'طب الباطنية', icon: '🩺', nameEn: 'Internal Medicine' },
+  { id: 10, name: 'الطب النفسي', icon: '🧘', nameEn: 'Psychiatry' },
+];
+
+// ============= Helper Functions =============
+export function generateTimeSlots(date: Date): { time: string; available: boolean; type: 'regular' | 'urgent' | 'video' }[] {
+  const slots = [];
+  const hours = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00'];
+  
+  for (const time of hours) {
+    slots.push({
+      time,
+      available: Math.random() > 0.3, // 70% availability
+      type: 'regular' as const
+    });
+  }
+  
+  return slots;
+}
+
+export function getDoctorsByClinic(clinicId: string): Doctor[] {
+  return doctors.filter(d => d.clinicId === clinicId);
+}
+
+export function getClinicById(clinicId: string): Clinic | undefined {
+  return clinics.find(c => c.id === clinicId);
+}
+
+export function getDoctorById(doctorId: string): Doctor | undefined {
+  return doctors.find(d => d.id === doctorId);
+}
+
+export function searchDoctors(filters: {
+  query?: string;
+  specialty?: string;
+  acceptsVideo?: boolean;
+  minRating?: number;
+}): Doctor[] {
+  return doctors.filter(doc => {
+    if (filters.query && !doc.name.includes(filters.query) && !doc.specialty.includes(filters.query)) {
+      return false;
+    }
+    if (filters.specialty && doc.specialty !== filters.specialty) {
+      return false;
+    }
+    if (filters.acceptsVideo && !doc.acceptsVideo) {
+      return false;
+    }
+    if (filters.minRating && doc.rating < filters.minRating) {
+      return false;
+    }
+    return true;
+  });
+}
