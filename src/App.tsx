@@ -30,6 +30,7 @@ import Settings from "./pages/patient/Settings";
 import Ambulance from "./pages/patient/Ambulance";
 import VideoConsultation from "./pages/patient/VideoConsultation";
 import LabBooking from "./pages/patient/LabBooking";
+import HomeVisit from "./pages/patient/HomeVisit";
 
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/Dashboard";
@@ -84,6 +85,7 @@ const App = () => (
           <Route path="/patient/video-consultation" element={<VideoConsultation />} />
           <Route path="/patient/video-booking/:id" element={<DoctorProfile />} />
           <Route path="/patient/lab/:id" element={<LabBooking />} />
+          <Route path="/patient/home-visit" element={<HomeVisit />} />
 
           {/* Doctor Routes */}
           <Route path="/doctor" element={<DoctorDashboard />} />

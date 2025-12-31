@@ -16,7 +16,7 @@ const actions = [
   { icon: Video, label: "استشارة فيديو", path: "/patient/video-consultation", color: "bg-teal-400" },
   { icon: FlaskConical, label: "تحاليل", path: "/patient/search?type=lab", color: "bg-coral-400" },
   { icon: Pill, label: "صيدلية", path: "/patient/pharmacy", color: "bg-secondary" },
-  { icon: HomeIcon, label: "زيارة منزلية", path: "/patient/search?type=doctor", color: "bg-teal-600" },
+  { icon: HomeIcon, label: "زيارة منزلية", path: "/patient/home-visit", color: "bg-teal-600" },
   { icon: Ambulance, label: "إسعاف", path: "/patient/services/ambulance", color: "bg-destructive" },
   { icon: Brain, label: "مساعد ذكي", path: "/patient/ai-assistant", color: "bg-teal-500" },
   { icon: FileText, label: "سجلي الطبي", path: "/patient/health-records", color: "bg-teal-700" },
