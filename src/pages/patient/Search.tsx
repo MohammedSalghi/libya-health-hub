@@ -19,18 +19,7 @@ import {
   List
 } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { doctors, clinics, labs } from "@/data/mockData";
-
-const specialties = [
-  { id: 1, name: "طب القلب", icon: "❤️" },
-  { id: 2, name: "طب الأطفال", icon: "👶" },
-  { id: 3, name: "طب الأسنان", icon: "🦷" },
-  { id: 4, name: "طب العيون", icon: "👁️" },
-  { id: 5, name: "طب الجلدية", icon: "🧴" },
-  { id: 6, name: "طب العظام", icon: "🦴" },
-  { id: 7, name: "طب النساء", icon: "👩" },
-  { id: 8, name: "طب الأعصاب", icon: "🧠" },
-];
+import { doctors, clinics, labs, specialties } from "@/data/mockData";
 
 type ViewMode = "list" | "map";
 type SearchType = "doctor" | "clinic" | "lab" | "video";
@@ -70,7 +59,9 @@ const SearchPage = () => {
         doc.name.includes(query) || 
         doc.specialty.includes(query) ||
         doc.clinicName.includes(query);
-      const matchesSpecialty = !selectedSpecialty || doc.specialty === selectedSpecialty;
+      const matchesSpecialty = !selectedSpecialty || 
+        doc.specialty.includes(selectedSpecialty) ||
+        doc.specialty === specialties.find(s => s.name === selectedSpecialty)?.fullName;
       const matchesVideo = !acceptsVideo || doc.acceptsVideo;
       const matchesAvailable = !availableNow || doc.isAvailable;
       return matchesQuery && matchesSpecialty && matchesVideo && matchesAvailable;
