@@ -19,13 +19,19 @@ import {
   Navigation,
   Shield,
   CheckCircle,
-  Languages
+  Languages,
+  Globe,
+  AlertTriangle
 } from "lucide-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { doctors, clinics } from "@/data/mockData";
 import { useHealthcareStore } from "@/stores/healthcareStore";
-import { Appointment, Fee } from "@/types/healthcare";
+import { Appointment, Clinic } from "@/types/healthcare";
+import { ClinicSelectionDialog } from "@/components/patient/ClinicSelectionDialog";
+import { BookingSummaryDialog } from "@/components/patient/BookingSummaryDialog";
+import { PaymentDialog } from "@/components/patient/PaymentDialog";
+import { VisitingDoctorRequestDialog } from "@/components/patient/VisitingDoctorRequestDialog";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();
@@ -41,14 +47,35 @@ const DoctorProfile = () => {
   } = useHealthcareStore();
   
   const doctor = doctors.find(d => d.id === id);
-  const clinic = doctor ? clinics.find(c => c.id === doctor.clinicId) : null;
   
+  // Get all clinics where this doctor works
+  const doctorClinics = useMemo(() => {
+    if (!doctor) return [];
+    // For demo, show doctor's primary clinic + any clinics with matching specialty
+    const primaryClinic = clinics.find(c => c.id === doctor.clinicId);
+    const otherClinics = clinics.filter(c => 
+      c.id !== doctor.clinicId && 
+      c.specialties.some(s => s.includes(doctor.specialty) || doctor.specialty.includes(s))
+    );
+    return primaryClinic ? [primaryClinic, ...otherClinics] : otherClinics;
+  }, [doctor]);
+  
+  const [selectedClinic, setSelectedClinic] = useState<Clinic | null>(doctorClinics[0] || null);
   const [selectedDate, setSelectedDate] = useState(0);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [bookingType, setBookingType] = useState<'in_person' | 'video'>('in_person');
   const [isBooking, setIsBooking] = useState(false);
+  
+  // Dialog states
+  const [showClinicDialog, setShowClinicDialog] = useState(false);
+  const [showSummaryDialog, setShowSummaryDialog] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [showVisitingDoctorDialog, setShowVisitingDoctorDialog] = useState(false);
 
   const isFavorite = doctor ? favoriteDoctors.includes(doctor.id) : false;
+  
+  // Check if doctor is visiting/international
+  const isVisitingDoctor = doctor?.title.includes('زائر') || doctor?.title.includes('دولي');
 
   // Generate next 7 days
   const dates = useMemo(() => {
@@ -101,31 +128,101 @@ const DoctorProfile = () => {
   const platformFee = 5;
   const totalFee = currentFee + platformFee;
 
-  const handleBooking = async () => {
+  const fees = [
+    { label: bookingType === 'video' ? 'رسوم استشارة الفيديو' : 'رسوم الاستشارة', amount: currentFee },
+    { label: 'رسوم الخدمة', amount: platformFee }
+  ];
+
+  // Handle clinic selection for in-person bookings
+  const handleSelectClinicClick = () => {
+    if (doctorClinics.length > 1) {
+      setShowClinicDialog(true);
+    }
+  };
+
+  // Handle booking initiation
+  const handleBookingClick = () => {
     if (!selectedTime) {
       toast.error("الرجاء اختيار وقت الموعد");
       return;
     }
 
-    if (walletBalance < totalFee) {
-      toast.error("رصيد المحفظة غير كافي");
-      navigate('/patient/wallet');
+    if (bookingType === 'in_person' && !selectedClinic) {
+      toast.error("الرجاء اختيار العيادة");
       return;
     }
 
+    // Check if visiting doctor - show request dialog
+    if (isVisitingDoctor) {
+      setShowVisitingDoctorDialog(true);
+      return;
+    }
+
+    // Show summary dialog
+    setShowSummaryDialog(true);
+  };
+
+  // Handle visiting doctor request submission
+  const handleVisitingDoctorRequestSubmitted = (requestId: string) => {
+    addNotification({
+      id: `notif-${Date.now()}`,
+      userId: 'user1',
+      type: 'general',
+      title: 'تم إرسال طلب الحجز',
+      message: `طلب حجز موعد مع ${doctor.name} قيد المراجعة. رقم الطلب: ${requestId}`,
+      data: {
+        serviceType: 'doctor',
+        serviceId: requestId
+      },
+      isRead: false,
+      createdAt: new Date().toISOString()
+    });
+  };
+
+  // Handle visiting doctor approval - proceed to payment
+  const handleVisitingDoctorApproved = () => {
+    setShowVisitingDoctorDialog(false);
+    
+    addNotification({
+      id: `notif-${Date.now()}`,
+      userId: 'user1',
+      type: 'appointment_confirmed',
+      title: 'تمت الموافقة على طلبك',
+      message: `تمت الموافقة على حجز موعد مع ${doctor.name}. يمكنك الآن إكمال الدفع.`,
+      isRead: false,
+      createdAt: new Date().toISOString()
+    });
+
+    // Show payment dialog
+    setTimeout(() => {
+      setShowPaymentDialog(true);
+    }, 500);
+  };
+
+  // Handle summary confirmation - show payment
+  const handleSummaryConfirm = () => {
+    setShowSummaryDialog(false);
+    setShowPaymentDialog(true);
+  };
+
+  // Handle payment completion
+  const handlePaymentComplete = async (method: string, transactionId: string) => {
+    setShowPaymentDialog(false);
     setIsBooking(true);
 
     try {
+      const clinic = selectedClinic || doctorClinics[0];
+      
       // Create appointment
       const appointment: Appointment = {
         id: `apt-${Date.now()}`,
         patientId: 'user1',
         doctorId: doctor.id,
         doctor: doctor,
-        clinicId: doctor.clinicId,
-        clinic: clinic!,
+        clinicId: clinic.id,
+        clinic: clinic,
         date: dates[selectedDate].full,
-        time: selectedTime,
+        time: selectedTime!,
         type: bookingType === 'video' ? 'video' : 'in_person',
         status: 'confirmed',
         fees: [
@@ -133,8 +230,8 @@ const DoctorProfile = () => {
           { type: 'platform', amount: platformFee, currency: 'د.ل', description: 'رسوم الخدمة' }
         ],
         totalAmount: totalFee,
-        paidAmount: totalFee,
-        paymentStatus: 'paid',
+        paidAmount: method === 'cash' ? 0 : totalFee,
+        paymentStatus: method === 'cash' ? 'pending' : 'paid',
         ratingPromptSent: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -143,23 +240,25 @@ const DoctorProfile = () => {
       // Add appointment to store
       addAppointment(appointment);
 
-      // Deduct from wallet
-      updateWalletBalance(-totalFee);
+      // Deduct from wallet if paid
+      if (method === 'wallet') {
+        updateWalletBalance(-totalFee);
+      }
 
       // Add transaction
       addTransaction({
-        id: `txn-${Date.now()}`,
+        id: transactionId,
         userId: 'user1',
         type: 'debit',
         amount: totalFee,
         description: `حجز موعد مع ${doctor.name}`,
         serviceType: 'doctor',
         serviceId: appointment.id,
-        status: 'completed',
+        status: method === 'cash' ? 'pending' : 'completed',
         createdAt: new Date().toISOString()
       });
 
-      // Add confirmation notification
+      // Add confirmation notification to patient
       addNotification({
         id: `notif-${Date.now()}`,
         userId: 'user1',
@@ -175,6 +274,34 @@ const DoctorProfile = () => {
         createdAt: new Date().toISOString()
       });
 
+      // Add notification to doctor (simulated)
+      addNotification({
+        id: `notif-doc-${Date.now()}`,
+        userId: doctor.id,
+        type: 'appointment_confirmed',
+        title: 'موعد جديد',
+        message: `لديك موعد جديد يوم ${dates[selectedDate].day} الساعة ${selectedTime}`,
+        isRead: false,
+        createdAt: new Date().toISOString()
+      });
+
+      // Schedule reminder notification (simulated - would be server-side)
+      setTimeout(() => {
+        addNotification({
+          id: `notif-reminder-${Date.now()}`,
+          userId: 'user1',
+          type: 'appointment_reminder',
+          title: 'تذكير بالموعد',
+          message: `تذكير: موعدك مع ${doctor.name} غداً الساعة ${selectedTime}`,
+          data: {
+            serviceType: 'doctor',
+            serviceId: appointment.id
+          },
+          isRead: false,
+          createdAt: new Date().toISOString()
+        });
+      }, 5000);
+
       toast.success("تم حجز الموعد بنجاح!");
       navigate('/patient/appointments');
     } catch (error) {
@@ -182,6 +309,19 @@ const DoctorProfile = () => {
     } finally {
       setIsBooking(false);
     }
+  };
+
+  // Handle payment failure
+  const handlePaymentFailed = (error: string) => {
+    addNotification({
+      id: `notif-${Date.now()}`,
+      userId: 'user1',
+      type: 'payment',
+      title: 'فشل الدفع',
+      message: error,
+      isRead: false,
+      createdAt: new Date().toISOString()
+    });
   };
 
   return (
@@ -221,10 +361,16 @@ const DoctorProfile = () => {
                 {doctor.name.charAt(3)}
               </div>
               <div className="flex-1">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="font-bold text-lg text-foreground">{doctor.name}</h1>
                   {doctor.isVerified && (
                     <CheckCircle className="w-5 h-5 text-primary fill-primary/20" />
+                  )}
+                  {isVisitingDoctor && (
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Globe className="w-3 h-3" />
+                      زائر
+                    </span>
                   )}
                 </div>
                 <p className="text-primary">{doctor.specialty}</p>
@@ -245,6 +391,21 @@ const DoctorProfile = () => {
       </div>
 
       <div className="mt-24 p-4 space-y-6">
+        {/* Visiting Doctor Notice */}
+        {isVisitingDoctor && (
+          <Card className="p-4 bg-amber-50 border-amber-200">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0" />
+              <div>
+                <p className="font-semibold text-amber-800">طبيب زائر / دولي</p>
+                <p className="text-sm text-amber-600">
+                  هذا الطبيب زائر ويتطلب موافقة مسبقة على الحجز. سيتم مراجعة طلبك قبل التأكيد.
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3">
           {[
@@ -382,14 +543,32 @@ const DoctorProfile = () => {
           </div>
         </Card>
 
-        {/* Location */}
+        {/* Location / Clinic Selection */}
         <Card className="p-4">
           <h3 className="font-semibold mb-3 flex items-center gap-2 text-foreground">
             <MapPin className="w-5 h-5 text-primary" />
-            الموقع
+            العيادة
           </h3>
-          <p className="text-sm text-muted-foreground mb-3">{clinic?.location.address}</p>
-          <Button variant="outline" className="w-full gap-2">
+          
+          {selectedClinic && (
+            <div className="space-y-2">
+              <p className="font-medium text-foreground">{selectedClinic.name}</p>
+              <p className="text-sm text-muted-foreground">{selectedClinic.location.address}</p>
+              
+              {doctorClinics.length > 1 && (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleSelectClinicClick}
+                  className="mt-2"
+                >
+                  تغيير العيادة ({doctorClinics.length} عيادات متاحة)
+                </Button>
+              )}
+            </div>
+          )}
+          
+          <Button variant="outline" className="w-full gap-2 mt-3">
             <Navigation className="w-4 h-4" />
             الاتجاهات على الخريطة
           </Button>
@@ -472,21 +651,71 @@ const DoctorProfile = () => {
         {/* Total & Book Button */}
         <div className="sticky bottom-0 py-4 bg-background border-t border-border -mx-4 px-4">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-muted-foreground">المجموع:</span>
-            <span className="text-xl font-bold text-primary">{totalFee} د.ل</span>
+            <span className="text-muted-foreground">الإجمالي</span>
+            <span className="text-2xl font-bold text-primary">{totalFee} د.ل</span>
           </div>
           <Button
             className="w-full h-14 text-lg"
             disabled={!selectedTime || isBooking}
-            onClick={handleBooking}
+            onClick={handleBookingClick}
           >
-            {isBooking ? "جاري الحجز..." : selectedTime ? `تأكيد الحجز` : "اختر الوقت للحجز"}
+            {isBooking ? "جاري الحجز..." : isVisitingDoctor ? "إرسال طلب الحجز" : "حجز الموعد"}
           </Button>
           <p className="text-xs text-center text-muted-foreground mt-2">
             رصيد المحفظة: {walletBalance} د.ل
           </p>
         </div>
       </div>
+
+      {/* Dialogs */}
+      <ClinicSelectionDialog
+        isOpen={showClinicDialog}
+        onClose={() => setShowClinicDialog(false)}
+        onSelectClinic={(clinic) => {
+          setSelectedClinic(clinic);
+          setShowClinicDialog(false);
+        }}
+        clinics={doctorClinics}
+        doctorName={doctor.name}
+      />
+
+      {selectedClinic && (
+        <BookingSummaryDialog
+          isOpen={showSummaryDialog}
+          onClose={() => setShowSummaryDialog(false)}
+          onConfirm={handleSummaryConfirm}
+          doctor={doctor}
+          clinic={selectedClinic}
+          date={dates[selectedDate].full}
+          time={selectedTime || ''}
+          bookingType={bookingType}
+          fees={fees}
+          totalAmount={totalFee}
+          isVisitingDoctor={isVisitingDoctor}
+        />
+      )}
+
+      <PaymentDialog
+        isOpen={showPaymentDialog}
+        onClose={() => setShowPaymentDialog(false)}
+        onPaymentComplete={handlePaymentComplete}
+        onPaymentFailed={handlePaymentFailed}
+        amount={totalFee}
+        serviceName={`حجز موعد مع ${doctor.name}`}
+        walletBalance={walletBalance}
+        allowCash={bookingType === 'in_person'}
+        serviceFees={fees}
+      />
+
+      <VisitingDoctorRequestDialog
+        isOpen={showVisitingDoctorDialog}
+        onClose={() => setShowVisitingDoctorDialog(false)}
+        onRequestSubmitted={handleVisitingDoctorRequestSubmitted}
+        onRequestApproved={handleVisitingDoctorApproved}
+        doctor={doctor}
+        date={dates[selectedDate].full}
+        time={selectedTime || ''}
+      />
     </PatientLayout>
   );
 };
