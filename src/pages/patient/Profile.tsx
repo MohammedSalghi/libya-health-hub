@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   User, Heart, Activity, Droplets, Scale, Ruler, Calendar,
-  Edit2, ChevronLeft, Shield, Bell, Moon, Globe, LogOut, Trash2
+  Edit2, ChevronLeft, Shield, Bell, Moon, Globe, LogOut, Trash2,
+  Users, Clock, HeartPulse, FileText
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +24,10 @@ const ProfilePage = () => {
 
   const menuItems = [
     { icon: User, label: "المعلومات الشخصية", path: "/patient/profile/edit" },
+    { icon: FileText, label: "السجل الطبي الموحد", path: "/patient/health-records" },
+    { icon: Users, label: "حساب العائلة", path: "/patient/family" },
+    { icon: Clock, label: "تذكير الأدوية", path: "/patient/medication-reminder" },
+    { icon: HeartPulse, label: "متابعة ما بعد الزيارة", path: "/patient/follow-up" },
     { icon: Heart, label: "الأمراض المزمنة", path: "/patient/health-records" },
     { icon: Activity, label: "السجل الصحي", path: "/patient/health-records" },
     { icon: Bell, label: "الإشعارات", path: "/patient/notifications" },
