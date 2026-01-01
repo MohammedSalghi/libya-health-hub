@@ -8,7 +8,10 @@ import {
   Ambulance, 
   Home as HomeIcon,
   Brain,
-  FileText
+  FileText,
+  Users,
+  Clock,
+  HeartPulse
 } from "lucide-react";
 
 const actions = [
@@ -20,6 +23,9 @@ const actions = [
   { icon: Ambulance, label: "إسعاف", path: "/patient/services/ambulance", color: "bg-destructive" },
   { icon: Brain, label: "مساعد ذكي", path: "/patient/ai-assistant", color: "bg-teal-500" },
   { icon: FileText, label: "سجلي الطبي", path: "/patient/health-records", color: "bg-teal-700" },
+  { icon: Users, label: "حساب العائلة", path: "/patient/family", color: "bg-indigo-500" },
+  { icon: Clock, label: "تذكير الأدوية", path: "/patient/medication-reminder", color: "bg-amber-500" },
+  { icon: HeartPulse, label: "المتابعة", path: "/patient/follow-up", color: "bg-rose-500" },
 ];
 
 export const QuickActions = () => {
