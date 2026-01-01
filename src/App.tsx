@@ -31,6 +31,9 @@ import Ambulance from "./pages/patient/Ambulance";
 import VideoConsultation from "./pages/patient/VideoConsultation";
 import LabBooking from "./pages/patient/LabBooking";
 import HomeVisit from "./pages/patient/HomeVisit";
+import Family from "./pages/patient/Family";
+import MedicationReminder from "./pages/patient/MedicationReminder";
+import FollowUp from "./pages/patient/FollowUp";
 
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/Dashboard";
