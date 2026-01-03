@@ -51,6 +51,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminUsers from "./pages/admin/Users";
 import AdminFacilities from "./pages/admin/Facilities";
 import AdminAnalytics from "./pages/admin/Analytics";
+import AdminPayments from "./pages/admin/Payments";
 
 const queryClient = new QueryClient();
 
@@ -109,6 +110,7 @@ const App = () => (
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/facilities" element={<AdminFacilities />} />
           <Route path="/admin/analytics" element={<AdminAnalytics />} />
+          <Route path="/admin/payments" element={<AdminPayments />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
