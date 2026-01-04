@@ -30,7 +30,8 @@ import { homeVisitProviders, homeVisitDoctors, getProvidersByCity, getDoctorsByP
 import { useHomeVisitStore } from "@/stores/homeVisitStore";
 import { useHealthcareStore } from "@/stores/healthcareStore";
 import { HomeVisitProvider, HomeVisitDoctor, HomeVisitBooking } from "@/types/homeVisit";
-import { PaymentDialog } from "@/components/patient/PaymentDialog";
+import { UnifiedPaymentDialog } from "@/components/payment/UnifiedPaymentDialog";
+import { PaymentResult } from "@/types/payment";
 
 type Step = 'city' | 'specialty' | 'provider' | 'doctor' | 'datetime' | 'address' | 'summary' | 'payment' | 'confirmation' | 'tracking';
 
@@ -1032,20 +1033,26 @@ const HomeVisitPage = () => {
       </div>
 
       {/* Payment Dialog */}
-      <PaymentDialog
+      <UnifiedPaymentDialog
         isOpen={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
-        onPaymentComplete={handlePaymentComplete}
+        onPaymentComplete={(result: PaymentResult) => handlePaymentComplete(result.paymentMethod, result.transactionId || `TXN-${Date.now()}`)}
         onPaymentFailed={handlePaymentFailed}
-        amount={calculateFees().total}
-        serviceName={`زيارة منزلية - ${selectedDoctor?.name || ''}`}
-        walletBalance={walletBalance}
-        allowCash={true}
-        serviceFees={[
-          { label: 'رسوم الكشف', amount: calculateFees().consultationFee },
-          { label: 'رسوم الزيارة', amount: calculateFees().visitFee },
-          { label: 'رسوم الخدمة', amount: calculateFees().platformFee }
-        ]}
+        paymentRequest={{
+          serviceType: 'home_visit',
+          serviceId: `hv-${Date.now()}`,
+          serviceName: `زيارة منزلية - ${selectedDoctor?.name || ''}`,
+          providerId: selectedProvider?.id || '',
+          providerName: selectedProvider?.name || '',
+          providerType: 'doctor',
+          amount: calculateFees().total,
+          fees: [
+            { label: 'رسوم الكشف', amount: calculateFees().consultationFee },
+            { label: 'رسوم الزيارة', amount: calculateFees().visitFee },
+            { label: 'رسوم الخدمة', amount: calculateFees().platformFee }
+          ],
+          allowCash: true,
+        }}
       />
     </PatientLayout>
   );

@@ -30,14 +30,14 @@ import {
 import { 
   Prescription, 
   PharmacyWithStock, 
-  LIBYAN_PAYMENT_METHODS,
-  ORDER_STATUS_INFO,
-  LibyanPaymentMethod
+  ORDER_STATUS_INFO
 } from "@/types/pharmacy";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { UnifiedPaymentDialog } from "@/components/payment/UnifiedPaymentDialog";
+import { PaymentResult } from "@/types/payment";
 
-type Step = 'prescriptions' | 'medications' | 'pharmacy' | 'payment' | 'confirmation';
+type Step = 'prescriptions' | 'medications' | 'pharmacy' | 'confirmation';
 
 const PharmacyPage = () => {
   const [activeTab, setActiveTab] = useState("order");
@@ -45,7 +45,7 @@ const PharmacyPage = () => {
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<LibyanPaymentMethod | null>(null);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -153,12 +153,14 @@ const PharmacyPage = () => {
       return;
     }
     selectPharmacy(pharmacy.id);
-    setCurrentStep('payment');
+    setShowPaymentDialog(true);
   };
 
-  // Handle payment and order creation
-  const handlePlaceOrder = async () => {
-    if (!activePrescription || !selectedPharmacy || !selectedPaymentMethod) {
+  // Handle payment completion
+  const handlePaymentComplete = async (result: PaymentResult) => {
+    setShowPaymentDialog(false);
+    
+    if (!activePrescription || !selectedPharmacy) {
       toast.error("يرجى إكمال جميع الخطوات");
       return;
     }
@@ -166,9 +168,10 @@ const PharmacyPage = () => {
     setIsProcessingPayment(true);
 
     try {
-      const order = createOrder(activePrescription.id, selectedPharmacy.id, selectedPaymentMethod);
+      const paymentMethod = result.paymentMethod.includes('cash') ? 'cash_on_delivery' : 'sadad';
+      const order = createOrder(activePrescription.id, selectedPharmacy.id, paymentMethod as any);
       
-      if (selectedPaymentMethod !== 'cash_on_delivery') {
+      if (!result.paymentMethod.includes('cash')) {
         const success = await processPayment(order.id);
         if (!success) {
           toast.error("فشل في عملية الدفع، يرجى المحاولة مرة أخرى");
@@ -178,7 +181,7 @@ const PharmacyPage = () => {
       }
 
       // Add audit log
-      addAuditLog(order.id, 'payment_completed', 'patient', `الدفع عبر ${selectedPaymentMethod}`);
+      addAuditLog(order.id, 'payment_completed', 'patient', `الدفع عبر ${result.paymentMethod}`);
 
       // Send notifications
       addNotification({
@@ -202,6 +205,19 @@ const PharmacyPage = () => {
     } finally {
       setIsProcessingPayment(false);
     }
+  };
+
+  // Handle payment failure
+  const handlePaymentFailed = (error: string) => {
+    addNotification({
+      id: `notif-${Date.now()}`,
+      userId,
+      type: 'payment',
+      title: 'فشل الدفع',
+      message: error,
+      isRead: false,
+      createdAt: new Date().toISOString()
+    });
   };
 
   // Simulate order progress
@@ -233,8 +249,7 @@ const PharmacyPage = () => {
     const steps = [
       { key: 'prescriptions', label: 'الوصفة' },
       { key: 'medications', label: 'الأدوية' },
-      { key: 'pharmacy', label: 'الصيدلية' },
-      { key: 'payment', label: 'الدفع' }
+      { key: 'pharmacy', label: 'الصيدلية' }
     ];
 
     const currentIndex = steps.findIndex(s => s.key === currentStep);
@@ -612,109 +627,7 @@ const PharmacyPage = () => {
     </div>
   );
 
-  // Render payment step
-  const renderPaymentStep = () => (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" size="sm" onClick={() => setCurrentStep('pharmacy')}>
-          <ChevronLeft className="w-4 h-4 ml-1" />
-          العودة
-        </Button>
-      </div>
-
-      {/* Order summary */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base flex items-center gap-2">
-            <Package className="w-5 h-5" />
-            ملخص الطلب
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center gap-2 text-sm">
-            <Pill className="w-4 h-4 text-muted-foreground" />
-            <span>{activePrescription?.medications.filter(m => m.isSelected).length} أدوية</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <MapPin className="w-4 h-4 text-muted-foreground" />
-            <span>{selectedPharmacy?.name}</span>
-          </div>
-          <Separator />
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">المجموع الفرعي</span>
-              <span>{orderTotal.subtotal} د.ل</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">رسوم التوصيل</span>
-              <span>{orderTotal.deliveryFee} د.ل</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">رسوم الخدمة</span>
-              <span>{orderTotal.serviceFee} د.ل</span>
-            </div>
-            <Separator />
-            <div className="flex justify-between font-bold text-lg">
-              <span>الإجمالي</span>
-              <span className="text-primary">{orderTotal.total} د.ل</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Payment methods */}
-      <div className="space-y-3">
-        <h3 className="font-medium flex items-center gap-2">
-          <CreditCard className="w-5 h-5" />
-          اختر طريقة الدفع
-        </h3>
-
-        {LIBYAN_PAYMENT_METHODS.map((method) => (
-          <Card 
-            key={method.id}
-            className={`cursor-pointer transition-all ${
-              selectedPaymentMethod === method.id 
-                ? 'ring-2 ring-primary bg-primary/5' 
-                : 'hover:bg-accent/50'
-            }`}
-            onClick={() => setSelectedPaymentMethod(method.id)}
-          >
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className={`w-12 h-12 ${method.color} rounded-full flex items-center justify-center text-2xl text-white`}>
-                {method.icon}
-              </div>
-              <div className="flex-1">
-                <p className="font-medium">{method.name}</p>
-                <p className="text-sm text-muted-foreground">{method.description}</p>
-              </div>
-              {selectedPaymentMethod === method.id && (
-                <CheckCircle2 className="w-6 h-6 text-primary" />
-              )}
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Button 
-        className="w-full" 
-        size="lg"
-        onClick={handlePlaceOrder}
-        disabled={!selectedPaymentMethod || isProcessingPayment}
-      >
-        {isProcessingPayment ? (
-          <>
-            <Loader2 className="w-5 h-5 ml-2 animate-spin" />
-            جاري معالجة الطلب...
-          </>
-        ) : (
-          <>
-            <CheckCircle className="w-5 h-5 ml-2" />
-            تأكيد الطلب ({orderTotal.total} د.ل)
-          </>
-        )}
-      </Button>
-    </div>
-  );
+  // Removed renderPaymentStep - using UnifiedPaymentDialog instead
 
   // Render confirmation step
   const renderConfirmationStep = () => (
@@ -745,9 +658,7 @@ const PharmacyPage = () => {
           </div>
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">طريقة الدفع</span>
-            <span className="font-medium">
-              {LIBYAN_PAYMENT_METHODS.find(m => m.id === selectedPaymentMethod)?.name}
-            </span>
+            <span className="font-medium">تم الدفع</span>
           </div>
           <Separator />
           <div className="flex items-center justify-between font-bold">
@@ -880,7 +791,6 @@ const PharmacyPage = () => {
             {currentStep === 'prescriptions' && renderPrescriptionsStep()}
             {currentStep === 'medications' && renderMedicationsStep()}
             {currentStep === 'pharmacy' && renderPharmacyStep()}
-            {currentStep === 'payment' && renderPaymentStep()}
             {currentStep === 'confirmation' && renderConfirmationStep()}
           </TabsContent>
 
@@ -1041,6 +951,31 @@ const PharmacyPage = () => {
           )}
         </SheetContent>
       </Sheet>
+
+      {/* Unified Payment Dialog */}
+      {selectedPharmacy && activePrescription && (
+        <UnifiedPaymentDialog
+          isOpen={showPaymentDialog}
+          onClose={() => setShowPaymentDialog(false)}
+          onPaymentComplete={handlePaymentComplete}
+          onPaymentFailed={handlePaymentFailed}
+          paymentRequest={{
+            serviceType: 'pharmacy',
+            serviceId: `order-${Date.now()}`,
+            serviceName: `طلب أدوية من ${selectedPharmacy.name}`,
+            providerId: selectedPharmacy.id,
+            providerName: selectedPharmacy.name,
+            providerType: 'pharmacy',
+            amount: orderTotal.total,
+            fees: [
+              { label: 'المجموع الفرعي', amount: orderTotal.subtotal },
+              { label: 'رسوم التوصيل', amount: orderTotal.deliveryFee },
+              { label: 'رسوم الخدمة', amount: orderTotal.serviceFee }
+            ],
+            allowCash: true,
+          }}
+        />
+      )}
     </PatientLayout>
   );
 };
