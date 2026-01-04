@@ -22,6 +22,8 @@ import { toast } from "sonner";
 import { labs, labTests } from "@/data/mockData";
 import { useHealthcareStore } from "@/stores/healthcareStore";
 import { LabBooking, LabTest, Fee } from "@/types/healthcare";
+import { UnifiedPaymentDialog } from "@/components/payment/UnifiedPaymentDialog";
+import { PaymentResult } from "@/types/payment";
 
 const LabBookingPage = () => {
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const LabBookingPage = () => {
   const [selectedDate, setSelectedDate] = useState(0);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
 
   // Generate dates
   const dates = useMemo(() => {
@@ -82,7 +85,7 @@ const LabBookingPage = () => {
     );
   };
 
-  const handleBooking = async () => {
+  const handleBookingClick = () => {
     if (selectedTests.length === 0) {
       toast.error("الرجاء اختيار تحليل واحد على الأقل");
       return;
@@ -93,12 +96,11 @@ const LabBookingPage = () => {
       return;
     }
 
-    if (walletBalance < totalAmount) {
-      toast.error("رصيد المحفظة غير كافي");
-      navigate('/patient/wallet');
-      return;
-    }
+    setShowPaymentDialog(true);
+  };
 
+  const handlePaymentComplete = async (result: PaymentResult) => {
+    setShowPaymentDialog(false);
     setIsBooking(true);
 
     try {
@@ -109,7 +111,7 @@ const LabBookingPage = () => {
         lab: lab,
         tests: selectedTestsData,
         date: dates[selectedDate].full,
-        time: selectedTime,
+        time: selectedTime!,
         type: bookingType,
         status: 'confirmed',
         fees: [
@@ -118,23 +120,26 @@ const LabBookingPage = () => {
           { type: 'platform' as const, amount: platformFee, currency: 'د.ل', description: 'رسوم الخدمة' }
         ],
         totalAmount,
-        paymentStatus: 'paid',
+        paymentStatus: result.paymentMethod.includes('cash') ? 'pending' : 'paid',
         ratingPromptSent: false,
         createdAt: new Date().toISOString()
       };
 
       addLabBooking(booking);
-      updateWalletBalance(-totalAmount);
+      
+      if (!result.paymentMethod.includes('cash')) {
+        updateWalletBalance(-totalAmount);
+      }
 
       addTransaction({
-        id: `txn-${Date.now()}`,
+        id: result.transactionId || `txn-${Date.now()}`,
         userId: 'user1',
         type: 'debit',
         amount: totalAmount,
         description: `حجز تحاليل في ${lab.name}`,
         serviceType: 'lab',
         serviceId: booking.id,
-        status: 'completed',
+        status: result.paymentMethod.includes('cash') ? 'pending' : 'completed',
         createdAt: new Date().toISOString()
       });
 
@@ -159,6 +164,18 @@ const LabBookingPage = () => {
     } finally {
       setIsBooking(false);
     }
+  };
+
+  const handlePaymentFailed = (error: string) => {
+    addNotification({
+      id: `notif-${Date.now()}`,
+      userId: 'user1',
+      type: 'payment',
+      title: 'فشل الدفع',
+      message: error,
+      isRead: false,
+      createdAt: new Date().toISOString()
+    });
   };
 
   return (
@@ -357,7 +374,7 @@ const LabBookingPage = () => {
             <Button
               className="w-full h-14 text-lg"
               disabled={!selectedTime || isBooking}
-              onClick={handleBooking}
+              onClick={handleBookingClick}
             >
               {isBooking ? "جاري الحجز..." : `تأكيد الحجز - ${totalAmount} د.ل`}
             </Button>
@@ -367,6 +384,29 @@ const LabBookingPage = () => {
           </div>
         )}
       </div>
+
+      {/* Payment Dialog */}
+      <UnifiedPaymentDialog
+        isOpen={showPaymentDialog}
+        onClose={() => setShowPaymentDialog(false)}
+        onPaymentComplete={handlePaymentComplete}
+        onPaymentFailed={handlePaymentFailed}
+        paymentRequest={{
+          serviceType: 'lab',
+          serviceId: `lab-${Date.now()}`,
+          serviceName: `حجز تحاليل في ${lab.name}`,
+          providerId: lab.id,
+          providerName: lab.name,
+          providerType: 'lab',
+          amount: totalAmount,
+          fees: [
+            { label: 'رسوم التحاليل', amount: testsTotal },
+            ...(homeCollectionFee > 0 ? [{ label: 'رسوم السحب المنزلي', amount: homeCollectionFee }] : []),
+            { label: 'رسوم الخدمة', amount: platformFee }
+          ],
+          allowCash: bookingType === 'in_lab',
+        }}
+      />
     </PatientLayout>
   );
 };
