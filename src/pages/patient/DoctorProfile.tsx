@@ -30,8 +30,9 @@ import { useHealthcareStore } from "@/stores/healthcareStore";
 import { Appointment, Clinic } from "@/types/healthcare";
 import { ClinicSelectionDialog } from "@/components/patient/ClinicSelectionDialog";
 import { BookingSummaryDialog } from "@/components/patient/BookingSummaryDialog";
-import { PaymentDialog } from "@/components/patient/PaymentDialog";
+import { UnifiedPaymentDialog } from "@/components/payment/UnifiedPaymentDialog";
 import { VisitingDoctorRequestDialog } from "@/components/patient/VisitingDoctorRequestDialog";
+import { usePaymentStore } from "@/stores/paymentStore";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();
@@ -695,16 +696,22 @@ const DoctorProfile = () => {
         />
       )}
 
-      <PaymentDialog
+      <UnifiedPaymentDialog
         isOpen={showPaymentDialog}
         onClose={() => setShowPaymentDialog(false)}
-        onPaymentComplete={handlePaymentComplete}
+        onPaymentComplete={(result) => handlePaymentComplete(result.paymentMethod, result.transactionId || `TXN-${Date.now()}`)}
         onPaymentFailed={handlePaymentFailed}
-        amount={totalFee}
-        serviceName={`حجز موعد مع ${doctor.name}`}
-        walletBalance={walletBalance}
-        allowCash={bookingType === 'in_person'}
-        serviceFees={fees}
+        paymentRequest={{
+          serviceType: 'appointment',
+          serviceId: `apt-${Date.now()}`,
+          serviceName: `حجز موعد مع ${doctor.name}`,
+          providerId: doctor.id,
+          providerName: doctor.name,
+          providerType: 'doctor',
+          amount: totalFee,
+          fees: fees,
+          allowCash: bookingType === 'in_person',
+        }}
       />
 
       <VisitingDoctorRequestDialog
