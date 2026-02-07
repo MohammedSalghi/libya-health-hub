@@ -25,25 +25,42 @@
 
 ## 📸 لقطات الشاشة
 
-### 🏠 الصفحة الرئيسية
-![Landing Page](https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=600&fit=crop&auto=format)
+<div align="center">
 
-*الصفحة الرئيسية تعرض خدمات المنصة الشاملة*
+### 🏠 الصفحة الرئيسية | Landing Page
+<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=600&fit=crop&auto=format" alt="Landing Page" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
 
-### 📱 تطبيق المريض
-![Patient App](https://images.unsplash.com/photo-1551076805-e1869033e561?w=1200&h=600&fit=crop&auto=format)
+> *الصفحة الرئيسية مع تصميم عصري يعرض خدمات المنصة الشاملة*
 
-*لوحة تحكم المريض مع الإجراءات السريعة والمواعيد القادمة*
+---
 
-### 👨‍⚕️ تطبيق الطبيب
-![Doctor App](https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1200&h=600&fit=crop&auto=format)
+### 📱 لوحة تحكم المريض | Patient Dashboard
+<img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=1200&h=600&fit=crop&auto=format" alt="Patient Dashboard" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
 
-*لوحة تحكم الطبيب مع إحصائيات الأداء والجدول اليومي*
+> *لوحة تحكم المريض مع الإجراءات السريعة والمواعيد القادمة والأطباء القريبين*
 
-### 🏢 لوحة الإدارة
-![Admin Panel](https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop&auto=format)
+---
 
-*لوحة تحكم المسؤول مع التحليلات والإحصائيات الشاملة*
+### 👨‍⚕️ لوحة تحكم الطبيب | Doctor Dashboard
+<img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=1200&h=600&fit=crop&auto=format" alt="Doctor Dashboard" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
+> *لوحة تحكم الطبيب مع إحصائيات الأداء والجدول اليومي وملفات المرضى*
+
+---
+
+### 🏢 لوحة الإدارة | Admin Panel
+<img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&auto=format" alt="Admin Panel" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
+> *لوحة تحكم المسؤول مع التحليلات الشاملة وإدارة المستخدمين والمنشآت*
+
+---
+
+### 🚑 خدمات الطوارئ | Emergency Services
+<img src="https://images.unsplash.com/photo-1619691249535-bcabc6e6c6f4?w=1200&h=600&fit=crop&auto=format" alt="Emergency Services" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
+> *طلب إسعاف طوارئ مع تتبع GPS في الوقت الحقيقي*
+
+</div>
 
 ---
 
