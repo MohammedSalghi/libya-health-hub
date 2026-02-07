@@ -27,38 +27,57 @@
 
 <div align="center">
 
-### 🏠 الصفحة الرئيسية | Landing Page
-<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=600&fit=crop&auto=format" alt="Landing Page" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+### 🏠 الصفحة الرئيسية بالعربية | Home Page RTL
+<img src="./assets/screenshots/home-rtl.png" alt="Home RTL" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
 
-> *الصفحة الرئيسية مع تصميم عصري يعرض خدمات المنصة الشاملة*
-
----
-
-### 📱 لوحة تحكم المريض | Patient Dashboard
-<img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=1200&h=600&fit=crop&auto=format" alt="Patient Dashboard" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
-
-> *لوحة تحكم المريض مع الإجراءات السريعة والمواعيد القادمة والأطباء القريبين*
+> *واجهة الصفحة الرئيسية مع دعم كامل للغة العربية (RTL) وتصميم متجاوب*
+>
+> *Home page interface with full Arabic language support (RTL) and responsive design*
 
 ---
 
-### 👨‍⚕️ لوحة تحكم الطبيب | Doctor Dashboard
-<img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=1200&h=600&fit=crop&auto=format" alt="Doctor Dashboard" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+### 🌐 الصفحة الرئيسية الكاملة | Landing Page Full
+<img src="./assets/screenshots/landing-fullpage.png" alt="Landing Full Page" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
 
-> *لوحة تحكم الطبيب مع إحصائيات الأداء والجدول اليومي وملفات المرضى*
-
----
-
-### 🏢 لوحة الإدارة | Admin Panel
-<img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&auto=format" alt="Admin Panel" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
-
-> *لوحة تحكم المسؤول مع التحليلات الشاملة وإدارة المستخدمين والمنشآت*
+> *عرض كامل للصفحة الرئيسية مع جميع الأقسام والخدمات المتاحة*
+>
+> *Complete landing page view showcasing all sections and available services*
 
 ---
 
-### 🚑 خدمات الطوارئ | Emergency Services
-<img src="https://images.unsplash.com/photo-1619691249535-bcabc6e6c6f4?w=1200&h=600&fit=crop&auto=format" alt="Emergency Services" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+### 📝 خطوات التسجيل والخدمات | Onboarding Services
+<img src="./assets/screenshots/onboarding-services.png" alt="Onboarding Services" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
 
-> *طلب إسعاف طوارئ مع تتبع GPS في الوقت الحقيقي*
+> *عملية التسجيل التفاعلية (8 خطوات) مع اختيار نوع الخدمة والتخصص*
+>
+> *Interactive onboarding process (8 steps) with service type and specialty selection*
+
+---
+
+### 📋 السجلات الطبية الإلكترونية | Medical Records
+<img src="./assets/screenshots/medical-records.png" alt="Medical Records" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
+> *نظام إدارة السجلات الصحية الشاملة مع التاريخ المرضي والوصفات والفحوصات*
+>
+> *Comprehensive health records management system with medical history, prescriptions, and lab results*
+
+---
+
+### 🤖 المساعد الطبي الذكي | AI Medical Assistant
+<img src="./assets/screenshots/ai-assistant.png" alt="AI Assistant" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
+> *مساعد ذكي لتحليل الأعراض وتفسير نتائج الفحوصات مع توصيات صحية مخصصة*
+>
+> *AI-powered assistant for symptom analysis, lab result interpretation, and personalized health recommendations*
+
+---
+
+### 🔒 الأمان والخصوصية | Security & Privacy
+<img src="./assets/screenshots/security.png" alt="Security" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
+> *نظام أمان متقدم مع التحقق بخطوتين والمصادقة البيومترية وتشفير البيانات*
+>
+> *Advanced security system with two-factor authentication, biometric verification, and data encryption*
 
 </div>
 
