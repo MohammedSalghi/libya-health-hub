@@ -1,73 +1,216 @@
-# Welcome to your Lovable project
+<div align="center">
 
-## Project info
+# 🏥 صحتي ليبيا | Sehati Libya
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+### منصة الرعاية الصحية الرقمية الشاملة لليبيا
 
-## How can I edit this code?
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-There are several ways of editing your application.
+**🌐 [عرض التطبيق](https://id-preview--94f10fd1-8bb9-419c-b98e-b111fc8cdaa2.lovable.app)**
 
-**Use Lovable**
+</div>
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📋 نظرة عامة
 
-**Use your preferred IDE**
+**صحتي ليبيا** هو نظام رعاية صحية رقمي متكامل مصمم خصيصاً للسوق الليبي. يربط المنصة بين المرضى والأطباء والمستشفيات والمختبرات والصيدليات في نظام بيئي صحي موحد.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### ✨ المميزات الرئيسية
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+| الميزة | الوصف |
+|--------|--------|
+| 🏠 **زيارات منزلية** | حجز أطباء وممرضين لزيارتك في المنزل |
+| 📹 **استشارات فيديو** | استشارات طبية عن بعد بجودة عالية |
+| 🧪 **حجز مختبرات** | حجز فحوصات مع خدمة جمع العينات المنزلية |
+| 💊 **صيدلية إلكترونية** | طلب الأدوية مع توصيل للمنزل |
+| 🚑 **خدمة إسعاف** | طلب إسعاف طوارئ مع تتبع GPS |
+| 🤖 **مساعد ذكي** | تحليل نتائج المختبر والتوصيات الصحية |
+| 📋 **سجلات صحية** | سجل طبي إلكتروني شامل |
+| 👨‍👩‍👧‍👦 **حسابات عائلية** | إدارة صحة جميع أفراد العائلة |
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+## 📸 لقطات الشاشة
+
+### 🏠 الصفحة الرئيسية
+<div align="center">
+<img src="docs/screenshots/landing-page.png" alt="الصفحة الرئيسية" width="100%"/>
+</div>
+
+### 📱 لوحة تحكم المريض
+<div align="center">
+<img src="docs/screenshots/patient-dashboard.png" alt="لوحة تحكم المريض" width="100%"/>
+</div>
+
+### 👨‍⚕️ لوحة تحكم الطبيب
+<div align="center">
+<img src="docs/screenshots/doctor-dashboard.png" alt="لوحة تحكم الطبيب" width="100%"/>
+</div>
+
+### 🏢 لوحة تحكم المسؤول
+<div align="center">
+<img src="docs/screenshots/admin-dashboard.png" alt="لوحة تحكم المسؤول" width="100%"/>
+</div>
+
+---
+
+## 🏗️ البنية التقنية
+
+```
+src/
+├── components/           # مكونات React قابلة لإعادة الاستخدام
+│   ├── layout/          # Header, Footer
+│   ├── onboarding/      # خطوات التسجيل (8 خطوات)
+│   ├── patient/         # مكونات المريض
+│   ├── payment/         # نظام الدفع (12 طريقة ليبية)
+│   ├── sections/        # أقسام الصفحة الرئيسية
+│   └── ui/              # shadcn/ui components
+├── pages/               # صفحات التطبيق
+│   ├── admin/           # لوحة تحكم المسؤول (5 صفحات)
+│   ├── auth/            # تسجيل الدخول والمصادقة
+│   ├── dashboard/       # لوحات العيادات/المختبرات/الصيدليات
+│   ├── doctor/          # تطبيق الطبيب (4 صفحات)
+│   └── patient/         # تطبيق المريض (21 صفحة)
+├── stores/              # Zustand state management
+├── types/               # TypeScript type definitions
+├── hooks/               # Custom React hooks
+└── data/                # Mock data للتطوير
+```
+
+---
+
+## 👥 أنواع المستخدمين
+
+### 🏥 المريض (Patient App)
+- 21 صفحة متكاملة
+- حجز مواعيد، زيارات منزلية، فحوصات
+- صيدلية إلكترونية، إسعاف، استشارات فيديو
+- سجلات صحية، تذكير الأدوية، محفظة إلكترونية
+
+### 👨‍⚕️ الطبيب (Doctor App)
+- لوحة تحكم بالإحصائيات
+- إدارة الجدول والمواعيد
+- ملفات المرضى
+- كتابة الوصفات الإلكترونية
+
+### 🏢 المنشآت (Facility Dashboards)
+- **العيادات/المستشفيات**: إدارة الأطباء والمواعيد
+- **المختبرات**: طلبات الفحوصات ورفع النتائج
+- **الصيدليات**: إدارة الطلبات والمخزون والتوصيل
+
+### 👔 المسؤول (Admin Panel)
+- إحصائيات شاملة
+- إدارة المستخدمين والمنشآت
+- تحليلات وتقارير
+- إدارة المدفوعات
+
+---
+
+## 💳 نظام الدفع الليبي
+
+يدعم التطبيق **12 طريقة دفع ليبية**:
+
+| الفئة | الطرق |
+|-------|--------|
+| 📱 محافظ إلكترونية | MobiCash, SADAD, Edfali, Aman Pay, Libyan Pay |
+| 🏦 تحويلات بنكية | Sahab, Tadawul, Commercial Bank, Al-Jumhuriya Bank |
+| 💳 بطاقات | NIRA (Mastercard/Visa) |
+| 🚚 عند الاستلام | Cash on Delivery |
+
+---
+
+## 🤖 المساعد الطبي الذكي
+
+| القدرة | الوصف |
+|--------|--------|
+| 📊 تحليل النتائج | تفسير نتائج المختبر |
+| ⚠️ تنبيهات ذكية | تحذيرات للقيم الخطرة |
+| 🩺 تقييم الأعراض | تحليل الأعراض والتوصية بالتخصص |
+| 💡 نصائح صحية | إرشادات مخصصة |
+| 📈 مراقبة الأمراض المزمنة | متابعة السكري والضغط |
+
+> ⚠️ **تنبيه**: المساعد الذكي للإرشاد فقط ولا يحل محل الطبيب
+
+---
+
+## 🛠️ التقنيات المستخدمة
+
+| التقنية | الاستخدام |
+|---------|----------|
+| ⚛️ React 18.3 | واجهة المستخدم |
+| 📘 TypeScript | Type Safety |
+| 🎨 Tailwind CSS | التصميم |
+| 🧩 shadcn/ui | مكونات UI |
+| 🗄️ Zustand | State Management |
+| 🔀 React Router | التنقل |
+| 📊 Recharts | الرسوم البيانية |
+| 🎬 Framer Motion | الأنيميشن |
+| ⚡ Vite | Build Tool |
+
+---
+
+## 🚀 التشغيل المحلي
+
+```bash
+# استنساخ المشروع
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# الدخول للمجلد
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# تثبيت المتطلبات
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# تشغيل السيرفر
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📊 إحصائيات المشروع
 
-**Use GitHub Codespaces**
+| المقياس | العدد |
+|---------|-------|
+| 📄 الصفحات | 45+ |
+| 🧩 المكونات | 80+ |
+| 📁 ملفات TypeScript | 100+ |
+| 🎨 أنماط CSS | 500+ |
+| 📦 المكتبات | 40+ |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🔒 الأمان والخصوصية
 
-This project is built with:
+- ✅ التحقق عبر OTP
+- ✅ تسجيل دخول بيومتري
+- ✅ نظام صلاحيات
+- ✅ تشفير البيانات
+- ✅ سجل التدقيق
+- ✅ إعدادات الخصوصية
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 🌍 اللغات
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+- 🇱🇾 العربية (RTL Support)
+- 🇬🇧 English
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 📝 الترخيص
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+هذا المشروع مرخص تحت [MIT License](LICENSE)
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+<div align="center">
+
+### 🇱🇾 صُنع بحب لليبيا 🇱🇾
+
+**[صحتي ليبيا](https://id-preview--94f10fd1-8bb9-419c-b98e-b111fc8cdaa2.lovable.app)** - نحو رعاية صحية أفضل
+
+</div>
