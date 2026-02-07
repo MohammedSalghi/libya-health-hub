@@ -1,15 +1,29 @@
-<div align="center">
+![App UI desine_page-0001](https://github.com/user-attachments/assets/15a1ec1b-bb10-40f5-9920-c01292608d77)<div align="center">
 
 # 🏥 صحتي ليبيا | Sehati Libya
 
 ### منصة الرعاية الصحية الرقمية الشاملة لليبيا
+<img width="1920" height="5844" alt="screencapture-id-preview-94f10fd1-8bb9-419c-b98e-b111fc8cdaa2-lovable-app-2026-02-07-12_26_51" src="https://github.com/user-attachments/assets/068f36b8-6e2a-439c-9bb2-6718d1339f84" />
+![App UI desine_page-0001](https://github.com/user-attachments/assets/7d37e161-82db-4b32-8e7d-260968322bd8)
 
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-
-<br/>
+![App UI desine_page-0002](https://github.com/user-attachments/assets/7100d04e-c493-4d20-9167-d55d6ef1eb19)
+![App UI desine_page-0003](https://github.com/user-attachments/assets/ba194124-9ff9-4e7e-8bf0-35909f8e3a19)
+![App UI desine_page-0004](https://github.com/user-attachments/assets/ece1661f-3268-4f58-a8f5-b2cbaeeea369)
+![App UI desine_page-0005](https://github.com/user-attachments/assets/e8544107-648c-41c2-bead-b6eb512a190c)
+![App UI desine_page-0006](https://github.com/user-attachments/assets/fddbe70c-5c2c-42ad-8f08-6b0e24b8515d)
+![App UI desine_page-0007](https://github.com/user-attachments/assets/eb33203e-babc-4d83-a57b-24a12cf00bd5)
+![App UI desine_page-0008](https://github.com/user-attachments/assets/1189fda2-5d39-418e-8b9e-402da991a35e)
+![App UI desine_page-0009](https://github.com/user-attachments/assets/9de73a0d-36f4-473b-9d26-ab2c2841c3b0)
+![App UI desine_page-0010](https://github.com/user-attachments/assets/2467398f-e1cd-450c-a9b2-5cdf810df68d)
+![App UI desine_page-0011](https://github.com/user-attachments/assets/2ca6ae6a-df59-4f99-a24f-183445a39046)
+![App UI desine_page-0012](https://github.com/user-attachments/assets/93f89c3d-3bea-4742-94af-8d388cfa762b)
+![App UI desine_page-0013](https://github.com/user-attachments/assets/6b75e1fb-45dd-47c4-b64a-8336ab686e9f)
+![App UI desine_page-0014](https://github.com/user-attachments/assets/6afc28c1-a6d1-42e3-836d-cc8ad7a897c3)
+![App UI desine_page-0015](https://github.com/user-attachments/assets/b03d066f-8ec1-4aa6-96ba-ae9b83a7a042)
+![App UI desine_page-0016](https://github.com/user-attachments/assets/68659fb6-5bd7-427c-ac84-1abe6becad4c)
+![App UI desine_page-0017](https://github.com/user-attachments/assets/086751c5-e78b-4f3d-bf4e-306e084275ed)
+![App UI desine_page-0018](https://github.com/user-attachments/assets/3c362b09-d15c-4a26-b31a-19973c085a37)
+![App UI desine_page-0019](https://github.com/user-attachments/assets/efa4a918-1efc-40f3-8fce-215cc1999bba)
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-View_App-14B8A6?style=for-the-badge)](https://id-preview--94f10fd1-8bb9-419c-b98e-b111fc8cdaa2.lovable.app)
 
@@ -28,35 +42,32 @@
 <div align="center">
 
 ### 🏠 الصفحة الرئيسية | Landing Page
-<img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=600&fit=crop&auto=format" alt="Landing Page" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
 
 > *الصفحة الرئيسية مع تصميم عصري يعرض خدمات المنصة الشاملة*
 
 ---
 
 ### 📱 لوحة تحكم المريض | Patient Dashboard
-<img src="https://images.unsplash.com/photo-1504813184591-01572f98c85f?w=1200&h=600&fit=crop&auto=format" alt="Patient Dashboard" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
 
 > *لوحة تحكم المريض مع الإجراءات السريعة والمواعيد القادمة والأطباء القريبين*
 
 ---
 
 ### 👨‍⚕️ لوحة تحكم الطبيب | Doctor Dashboard
-<img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=1200&h=600&fit=crop&auto=format" alt="Doctor Dashboard" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+
 
 > *لوحة تحكم الطبيب مع إحصائيات الأداء والجدول اليومي وملفات المرضى*
 
 ---
 
-### 🏢 لوحة الإدارة | Admin Panel
-<img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&auto=format" alt="Admin Panel" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+### 🏢 لوحة الإدارة | 
 
 > *لوحة تحكم المسؤول مع التحليلات الشاملة وإدارة المستخدمين والمنشآت*
 
 ---
 
-### 🚑 خدمات الطوارئ | Emergency Services
-<img src="https://images.unsplash.com/photo-1619691249535-bcabc6e6c6f4?w=1200&h=600&fit=crop&auto=format" alt="Emergency Services" width="100%" style="border-radius: 12px; margin-bottom: 20px;" />
+### 🚑 خدمات الطوارئ | 
 
 > *طلب إسعاف طوارئ مع تتبع GPS في الوقت الحقيقي*
 
